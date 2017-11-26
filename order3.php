@@ -1,3 +1,18 @@
+<?php 
+      session_start(); 
+      if(!isset($_SESSION['order'])){ 
+            header("Location: order.php"); 
+            die; 
+      } 
+      else if(!isset($_SESSION['order2'])){ 
+            header("Location: order2.php"); 
+            die; 
+      } 
+      else if(isset($_SESSION['order3'])){ 
+            header("Location: order4.php"); 
+            die; 
+      } 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,6 +39,20 @@
   </head>
 
   <body id="page-top">
+         <?php
+         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              include "connect.php";
+                $namadepan = explode(" ", $_POST['ordernama']);
+                $potong = substr($namadepan[0], 0, 3);
+                $kode=$potong."0".$_SESSION['id'];
+                $query = "UPDATE `order` SET order_nama='$_POST[ordernama]' , order_kontak='$_POST[handphone]', order_kode = '$kode' where id = '$_SESSION[id]'";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+                $row = mysqli_fetch_array($sql);
+                $_SESSION['order3']=1;
+                header("Location: order4.php"); 
+              }
+            
+    ?>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
@@ -49,18 +78,47 @@
       </div>
     </nav>
 
-    <!-- Header -->
+    <!-- Portfolio Grid Section -->
     <header class="masthead">
       <div class="container">
-        <img class="img-fluid" src="img/logo.png" alt="">
-        <div class="intro-text">
-          <span class="name">Theater Print</span>
-          <hr class="star-light">
-          <span class="skills">Print Everything Everyday</span>
-        </div>
+        <h2 class="text-center">Order</h2>
+        <hr class="star-primary">
+        <h3 class="text-center" style="margin-bottom: 2em">Please Fill The Form Below<h3>
       </div>
-    </header>
 
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          
+        </div>
+
+        <div class="col-sm-4">
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+          
+            <div class="form-group">
+              <label style="font-size: 2em">Nama</label>
+              <br>
+              <input type="text" class="form-control" name="ordernama">
+            </div>
+            <br>
+            <div class="form-group">
+              <br>
+              <label style="font-size: 2em">No Handphone</label>
+              <input type="text" class="form-control" name="handphone">
+            </div>
+            <br>
+              <button class="btn btn-outline" type="submit" name="button-upload">Order</button>
+        </form>
+        </div>
+
+        <div class="col-sm-4">
+          
+        </div>
+
+      </div>
+      </div>
+
+    </header>
 
     <!-- Footer -->
     <footer class="text-center">
@@ -69,7 +127,7 @@
           <div class="row">
             <div class="footer-col col-md-4">
               <h3>Location</h3>
-              <p>ITS , Keputih
+              <p>ITS, Keputih
                 <br>Surabaya, Indonesia</p>
             </div>
             <div class="footer-col col-md-4">

@@ -24,7 +24,11 @@
   </head>
 
   <body id="page-top">
-
+          <?php
+                include "connect.php";
+                $query = "SELECT * FROM `order` WHERE order_status='1'";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+          ?>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -36,13 +40,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="order.html">Order</a>
+              <a class="nav-link js-scroll-trigger" href="order_masuk.php">Pesanan Masuk</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="checkorder.html">Check Order</a>
+              <a class="nav-link js-scroll-trigger" href="order_selesai.php">Pesanan Selesai</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+              <a class="nav-link js-scroll-trigger" href="logout.php">Log Out</a>
             </li>
           </ul>
         </div>
@@ -52,15 +56,79 @@
     <!-- Portfolio Grid Section -->
     <header class="masthead">
       <div class="container">
-        <h2 class="text-center">Order</h2>
-        <hr class="star-primary">
-        <div class="container text-center">
-          <h3>Upload<h3>
-          <img class="img-fluid" style="margin-top: 1em;margin-bottom: 1em" src="img/upload.png" alt="">
-          <h6>*pastikan file yang anda upload sudah benar</h6>
-          <a href="order2.html"><img style="margin-bottom: 0.5em;margin-top: 1em;float: right;height: 70px" src="img/next.png" alt=""></a>
+        <h1 class="text-center">Pesanan Selesai</h1>
+        <hr class="star-primary" style="margin-bottom: 5em">
+      </div>
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+         <div class="table-responsive">
+           <table class="table table-hover">
+             <thead>
+               <tr>
+                 <th>Kode Order</th>
+                 <th>Pilihan Kertas</th>
+                 <th>Warna</th>
+                 <th>Hal</th>
+                 <th>Sampai</th>
+                 <th>Copy</th>
+                 <th>Tanggal Pengambilan</th>
+                 <th>Keterangan Tambahan</th>
+                 <th>File</th>
+                 <th>Status</th>
+               </tr>
+             </thead>
+             <tbody>
+               <?php
+                  while($row = mysqli_fetch_array($sql)){
+                    $file = explode("/", $row['order_file']);
+                    echo "
+               <tr>
+                 <td>".$row['order_kode']."</td>";
+                 if ($row['order_kertas']==1){
+                      echo "<td>A3</td>";
+                    }
+                    else if ($row['order_kertas']==2) {
+                      echo "<td>A4</td>";
+                    }
+                    else if ($row['order_kertas']==3) {
+                      echo "<td>A5</td>";
+                    }
+                    else{
+                      echo "<td>F4</td>";
+                    }
+                  if($row['order_warna']==1){
+                    echo "<td>Berwarna</td>";
+                  }
+                  else{
+                    echo "<td>Hitam Putih</td>";
+                  }
+                    echo "
+                 <td>".$row['order_hal']."</td>
+                 <td>".$row['order_sampai']."</td>
+                 <td>".$row['order_copy']."</td>
+                 <td>".$row['ambil_tanggal']."</td>
+                 <td>".$row['order_ket']."</td>
+                 <td>".$file[1]."</td>";
+                 if($row['order_status']==1){
+                  echo "<td>DONE</td>
+               </tr>";
+                 }
+                 else{
+                  echo "<td>ON PROCESS</td>
+               </tr>";
+                 }
+              echo "</tr>";
+               
+                  }
+               ?>
+             </tbody>
+           </table>
+         </div>
         </div>
       </div>
+      </div>
+
     </header>
 
     <!-- Footer -->

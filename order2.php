@@ -1,3 +1,18 @@
+<?php 
+      session_start(); 
+      if(!isset($_SESSION['order'])){ 
+            header("Location: order.php"); 
+            die; 
+      } 
+      else if(isset($_SESSION['order2'])){ 
+            header("Location: order3.php"); 
+            die; 
+      } 
+      else if(isset($_SESSION['order3'])){ 
+            header("Location: order4.php"); 
+            die; 
+      } 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,6 +39,55 @@
   </head>
 
   <body id="page-top">
+     <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              include "connect.php";
+              $jum_hal=$_POST['sampai']-$_POST['hal']+1;
+                if ($_POST['kertas']=="1"){
+                  if ($_POST['warna']=="1"){
+                    $harga=$jum_hal*$_POST['copy']*800;
+                  }
+                  else {
+                    $harga=$jum_hal*$_POST['copy']*400;
+                  }
+                }
+                else if ($_POST['kertas']=="2"){
+                  if ($_POST['warna']=="1"){
+                    $harga=$jum_hal*$_POST['copy']*1000;
+                  }
+                  else {
+                    $harga=$jum_hal*$_POST['copy']*500;
+                  }
+                  
+                }
+                else if ($_POST['kertas']=="3"){
+                  if ($_POST['warna']=="1"){
+                    $harga=$jum_hal*$_POST['copy']*1500;
+                  }
+                  else {
+                    $harga=$jum_hal*$_POST['copy']*700;
+                  }
+                  
+                }
+                else if ($_POST['kertas']=="4"){
+                  if ($_POST['warna']=="1"){
+                    $harga=$jum_hal*$_POST['copy']*1700;
+                  }
+                  else {
+                    $harga=$jum_hal*$_POST['copy']*820;
+                  }
+                  
+                }
+                $date = date("Y-m-d");
+                $query = "UPDATE `order` SET order_kertas = '$_POST[kertas]', order_warna='$_POST[warna]', order_hal='$_POST[hal]', order_sampai='$_POST[sampai]', order_copy='$_POST[copy]', ambil_tanggal='$_POST[tanggal]', order_ket='$_POST[keterangan]', order_tanggal='$date', order_harga='$harga' WHERE id = '$_SESSION[id]'";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+                $row = mysqli_fetch_array($sql);
+                $_SESSION['order2']=1;
+                header("Location: order3.php"); 
+                
+                
+            }
+    ?>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
@@ -36,13 +100,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="order.html">Order</a>
+              <a class="nav-link js-scroll-trigger" href="order.php">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="checkorder.html">Check Order</a>
+              <a class="nav-link js-scroll-trigger" href="checkorder.php">Check Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+              <a class="nav-link js-scroll-trigger" href="admin.php">Admin</a>
             </li>
           </ul>
         </div>
@@ -64,26 +128,43 @@
         </div>
 
         <div class="col-sm-4">
-        <form>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
           
             <div class="form-group">
-              <label style="font-size: 2em">Nama</label>
-              <br>
-              <input type="text" name="" class="form-control">
+              <label style="font-size: 2em">PILIHAN KERTAS</label>
+              <select class="form-control" name="kertas">
+                <option value="1">A3</option>
+                <option value="2">A4</option>
+                <option value="3">A5</option>
+                <option value="4">F4</option>
+              </select>
             </div>
             <br>
             <div class="form-group">
+              <label style="font-size: 2em">Warna</label>
               <br>
-              <label style="font-size: 2em">No Handphone</label>
-              <input type="text" name="" class="form-control">
+              <label style="font-size: 1.5em;margin-right: 1em" class="radio-inline"><input type="radio" name="warna" value="1">Berwarna</label>
+              <label style="font-size: 1.5em;margin-left: 1em" class="radio-inline"><input type="radio" name="warna" value="2">Hitam Putih</label>
             </div>
             <br>
             <div class="form-group">
+              <label style="font-size: 2em">Jumlah Print</label>
               <br>
-              <label style="font-size: 2em">Harga</label>
-              <input type="text" name="" class="form-control">
+              <label style="font-size: 1.5em">Hal</label><input type="text" class="form-control" name="hal">
+              <label style="font-size: 1.5em">Sampai</label><input type="text" class="form-control" name="sampai">
+              <label style="font-size: 1.5em">Copy</label><input type="text" class="form-control" name="copy">
             </div>
-          
+            <br>
+            <div class="form-group">
+              <label style="font-size: 2em">Tanggal Pengambilan</label>
+              <input type="date" class="form-control" name="tanggal">
+            </div>
+            <br>
+            <div class="form-group">
+              <label style="font-size: 2em">Keterangan Tambahan</label>
+              <textarea class="form-control" rows="5" name="keterangan"></textarea>
+            </div>
+              <button class="btn btn-outline" type="submit" name="button-upload">Submit</button>
         </form>
         </div>
 
@@ -92,7 +173,6 @@
         </div>
 
       </div>
-      <a class="btn btn-lg btn-outline" href="order4.html" style="margin-bottom: 0.5em;margin-top: 1em;float: right;">Order</a>
       </div>
 
     </header>

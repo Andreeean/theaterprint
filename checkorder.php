@@ -24,7 +24,12 @@
   </head>
 
   <body id="page-top">
-
+          <?php
+                include "connect.php";
+                $query = "SELECT order_kode, order_status, order_harga FROM `order` WHERE order_kode = '$_POST[kode]'";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+                $row = mysqli_fetch_array($sql);
+          ?>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -36,13 +41,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="order.html">Order</a>
+              <a class="nav-link js-scroll-trigger" href="order.php">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="checkorder.html">Check Order</a>
+              <a class="nav-link js-scroll-trigger" href="checkorder.php">Check Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+              <a class="nav-link js-scroll-trigger" href="admin.php">Admin</a>
             </li>
           </ul>
         </div>
@@ -57,45 +62,66 @@
       </div>
 
       <div class="container" style="margin-bottom: 3em">
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
         <div class="row">
-          <div class="col-sm-3">
-          
+          <div class="col-sm-4">
+            
           </div>
-
-          <div class="col-sm-6">
-            <div>
-              <input type="text" name="" class="form-control">
-              <button class="btn btn-lg btn-outline text-center">Check Order</button>
+          
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input type="text" name="kode" class="form-control">
+              <button class="btn btn-lg btn-outline">Check Order</button>
             </div>
           </div>
-
-          <div class="col-sm-3">
-          
+       
+          <div class="col-sm-4">
+            
           </div>
-
-        
         </div>
+         </form>
       </div>
 
-      <div class="container" style="margin-top: 2em;visibility: hidden;">
-        <div class="row">
-          <div class="col-sm-4">
-              <label class="text-center" style="font-size: 2em">Kode Order</label>
-              <h4 class="text-center">RANDOM001</h4>
+      <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && mysqli_num_rows($sql)>0){
+          if ($row['order_status'] == 1){
+            echo"<div class='container' style='margin-top: 2em;'>
+          <div class='row'>
+            <div class='col-sm-4'>
+                <label class='text-center' style='font-size: 2em'>Kode Order</label>
+                <h4 class='text-center'>".$row['order_kode']."</h4>
+            </div>
+            <div class='col-sm-4'>
+                <label class='text-center' style='font-size: 2em'>Status Pemesanan</label>
+                <h4 class='text-center'>Done</h4>
+            </div>
+            <div class='col-sm-4'>
+                <label class='text-center' style='font-size: 2em'>Estimasi Harga</label>
+                <h4 class='text-center'>".$row['order_harga']."</h4>
+            </div>
           </div>
-
-          <div class="col-sm-4">
-              <label class="text-center" style="font-size: 2em">Status Pemesanan</label>
-              <h4 class="text-center">On Process</h4>
+        </div>";
+          }
+          else{
+            echo "<div class='container' style='margin-top: 2em;'>
+          <div class='row'>
+            <div class='col-sm-4'>
+                <label class='text-center' style='font-size: 2em'>Kode Order</label>
+                <h4 class='text-center'>".$row['order_kode']."</h4>
+            </div>
+            <div class='col-sm-4'>
+                <label class='text-center' style='font-size: 2em'>Status Pemesanan</label>
+                <h4 class='text-center'>On Process</h4>
+            </div>
+            <div class='col-sm-4'>
+                <label class='text-center' style='font-size: 2em'>Estimasi Harga</label>
+                <h4 class='text-center'>".$row['order_harga']."</h4>
+            </div>
           </div>
-
-          <div class="col-sm-4">
-              <label class="text-center" style="font-size: 2em">Estimasi Harga</label>
-              <h4 class="text-center">Rp. 1.000.000</h4>
-          </div>
-
-        </div>
-      </div>
+        </div>";
+          }
+        }
+      ?>
 
     </header>
 

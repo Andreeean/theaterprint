@@ -1,3 +1,18 @@
+<?php 
+      session_start(); 
+      if(isset($_SESSION['order'])){ 
+            header("Location: order2.php"); 
+            die; 
+      } 
+      else if(isset($_SESSION['order2'])){ 
+            header("Location: order3.php"); 
+            die; 
+      } 
+      else if(isset($_SESSION['order3'])){ 
+            header("Location: order4.php"); 
+            die; 
+      } 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,10 +36,47 @@
     <!-- Custom styles for this template -->
     <link href="css/freelancer.min.css" rel="stylesheet">
 
+    <style type="text/css">
+      .fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+      }
+      .fileUpload input.upload {
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin: 0;
+          padding: 0;
+          font-size: 20px;
+          cursor: pointer;
+          opacity: 0;
+          filter: alpha(opacity=0);
+      }
+    </style>
+
   </head>
 
   <body id="page-top">
-
+    <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              include "connect.php";
+              $upload_directory = "file/"; 
+              $ext = end(explode(".", $_FILES['file']['name']));
+              $TargetPath=time().'.'.$ext; 
+              if(move_uploaded_file($_FILES['file']['tmp_name'], $upload_directory.$TargetPath)){
+                $filepath = $upload_directory.$TargetPath;
+                $query = "INSERT INTO `order`(order_file, order_status) VALUES ('$filepath','0')";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+                $query = "SELECT id FROM `order` WHERE order_file = '$filepath'";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+                $row = mysqli_fetch_array($sql);
+                $_SESSION['order']=1;
+                $_SESSION['id']=$row['id'];
+                header("Location: order2.php"); 
+              }
+            }
+    ?>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -36,13 +88,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="order.html">Order</a>
+              <a class="nav-link js-scroll-trigger" href="order.php">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="checkorder.html">Check Order</a>
+              <a class="nav-link js-scroll-trigger" href="checkorder.php">Check Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+              <a class="nav-link js-scroll-trigger" href="admin.php">Admin</a>
             </li>
           </ul>
         </div>
@@ -53,29 +105,22 @@
     <header class="masthead">
       <div class="container">
         <h2 class="text-center">Order</h2>
-        <hr class="star-primary" style="margin-bottom: 5em">
-      </div>
-
-      <div class="container">
-      <div class="row">
-        <div class="col-sm-3">
-          
+        <hr class="star-primary">
+        <div class="container text-center">
+          <h3>Upload<h3>
+            <br>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+              <div class="fileUpload btn btn-lg btn-outline">
+                <span>Choose File</span>
+                <input class="upload" type="file" name="file">
+              </div>
+              <br>
+              <button class="btn btn-outline" type="submit" name="button-upload">Upload</button>
+            </form>
+            <br>
+          <h6>*pastikan file yang anda upload sudah benar</h6>
         </div>
-
-        <div class="col-sm-6">
-          <label class="text-center" style="font-size: 2em">Pemesanan anda telah diinput!</label>
-          <label class="text-center" style="font-size: 2em">Kode order anda :</label>
-          <hr>
-          <h4 class="text-center">RANDOM001</h4>
-        </div>
-
-        <div class="col-sm-3">
-          
-        </div>
-
       </div>
-      </div>
-
     </header>
 
     <!-- Footer -->

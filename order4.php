@@ -1,3 +1,18 @@
+<?php 
+      session_start(); 
+      if(!isset($_SESSION['order'])){ 
+            header("Location: order.php"); 
+            die; 
+      } 
+      else if(!isset($_SESSION['order2'])){ 
+            header("Location: order2.php"); 
+            die; 
+      } 
+      else if(!isset($_SESSION['order3'])){ 
+            header("Location: order3.php"); 
+            die; 
+      } 
+?> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,18 +64,60 @@
       </div>
     </nav>
 
-    <!-- Header -->
+    <!-- Portfolio Grid Section -->
     <header class="masthead">
       <div class="container">
-        <img class="img-fluid" src="img/logo.png" alt="">
-        <div class="intro-text">
-          <span class="name">Theater Print</span>
-          <hr class="star-light">
-          <span class="skills">Print Everything Everyday</span>
-        </div>
+        <h2 class="text-center">Order</h2>
+        <hr class="star-primary" style="margin-bottom: 3em">
       </div>
-    </header>
 
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          
+        </div>
+
+          <?php
+                include "connect.php";
+                $query = "SELECT order_harga, order_kode FROM `order` WHERE id = '$_SESSION[id]'";
+                $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
+                $row = mysqli_fetch_array($sql);
+          ?>
+        <div class="col-sm-6">
+          <label class="text-center" style="font-size: 2em">Pemesanan anda telah diinput!</label>
+          <label class="text-center" style="font-size: 2em">Kode order anda :</label>
+          <hr>
+          <h4 class="text-center">
+          <?php 
+            echo $row['order_kode'];
+          ?>
+          </h4>
+          <hr>
+          <label class="text-center" style="font-size: 2em">Harga :</label>
+          <hr>
+          <h4 class="text-center">Rp. <?php echo $row['order_harga'];?></h4>
+          <hr>
+          <?php
+            if (!empty($_GET['act'])) {
+              session_destroy();
+              header("Location: order.php"); 
+              die; 
+            }
+          ?>
+          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
+            <input type="hidden" name="act" value="run">
+            <button class="btn btn-outline" type="submit" name="button-upload">Order Lagi</button>
+          </form>
+        </div>
+
+        <div class="col-sm-3">
+          
+        </div>
+
+      </div>
+      </div>
+
+    </header>
 
     <!-- Footer -->
     <footer class="text-center">
@@ -69,7 +126,7 @@
           <div class="row">
             <div class="footer-col col-md-4">
               <h3>Location</h3>
-              <p>ITS , Keputih
+              <p>ITS, Keputih
                 <br>Surabaya, Indonesia</p>
             </div>
             <div class="footer-col col-md-4">
