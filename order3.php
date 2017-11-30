@@ -41,11 +41,14 @@
   <body id="page-top">
          <?php
          if ($_SERVER["REQUEST_METHOD"] == "POST") {
-              include "connect.php";
-                $namadepan = explode(" ", $_POST['ordernama']);
+                include "connect.php";
+                include "library/function_noinject.php";
+                $ordernama = antiinjeksi($_POST['ordernama']);
+                $orderkontak = antiinjeksi($_POST['handphone']);
+                $namadepan = explode(" ", $ordernama);
                 $potong = substr($namadepan[0], 0, 3);
                 $kode=$potong."0".$_SESSION['id'];
-                $query = "UPDATE `order` SET order_nama='$_POST[ordernama]' , order_kontak='$_POST[handphone]', order_kode = '$kode' where id = '$_SESSION[id]'";
+                $query = "UPDATE `order` SET order_nama='$ordernama' , order_kontak='$orderkontak', order_kode = '$kode' where id = '$_SESSION[id]'";
                 $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
                 $row = mysqli_fetch_array($sql);
                 $_SESSION['order3']=1;

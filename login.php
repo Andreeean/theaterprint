@@ -1,12 +1,14 @@
 <?php
+include "connect.php";
+include "library/function_noinject.php";
 include_once('header.php');
  if(!isset($_SESSION['loggedin'])){ //Apabila user belum login
 
    if(isset($_POST['login'])){ //Apabila user mencoba melakukan login
 
      if((!empty($_POST['username']))&&(!empty($_POST['password']))){
-       $username = $_POST['username'];
-       $password = $_POST['password'];
+       $username = antiinjeksi($_POST['username']);
+       $password = antiinjeksi($_POST['password']);
 
        if(($username == 'admin') && ($password == 'admin')){
          session_start();

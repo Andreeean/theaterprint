@@ -42,44 +42,54 @@
      <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               include "connect.php";
-              $jum_hal=$_POST['sampai']-$_POST['hal']+1;
-                if ($_POST['kertas']=="1"){
-                  if ($_POST['warna']=="1"){
-                    $harga=$jum_hal*$_POST['copy']*800;
+              include "library/function_noinject.php";
+
+              $kertas=antiinjeksi($_POST['kertas']);
+              $warna=antiinjeksi($_POST['warna']);
+              $hal=antiinjeksi($_POST['hal']);
+              $sampai=antiinjeksi($_POST['sampai']);
+              $copy=antiinjeksi($_POST['copy']);
+              $keterangan=antiinjeksi($_POST['keterangan']);
+              $ambil_tanggal=antiinjeksi($_POST['tanggal']);
+
+              $jum_hal=$sampai-$hal+1;
+                if ($kertas=="1"){
+                  if ($warna=="1"){
+                    $harga=$jum_hal*$copy*800;
                   }
                   else {
-                    $harga=$jum_hal*$_POST['copy']*400;
+                    $harga=$jum_hal*$copy*400;
                   }
                 }
-                else if ($_POST['kertas']=="2"){
-                  if ($_POST['warna']=="1"){
-                    $harga=$jum_hal*$_POST['copy']*1000;
+                else if ($kertas=="2"){
+                  if ($warna=="1"){
+                    $harga=$jum_hal*$copy*1000;
                   }
                   else {
-                    $harga=$jum_hal*$_POST['copy']*500;
+                    $harga=$jum_hal*$copy*500;
                   }
                   
                 }
-                else if ($_POST['kertas']=="3"){
-                  if ($_POST['warna']=="1"){
-                    $harga=$jum_hal*$_POST['copy']*1500;
+                else if ($kertas=="3"){
+                  if ($warna=="1"){
+                    $harga=$jum_hal*$copy*1500;
                   }
                   else {
-                    $harga=$jum_hal*$_POST['copy']*700;
+                    $harga=$jum_hal*$copy*700;
                   }
                   
                 }
-                else if ($_POST['kertas']=="4"){
-                  if ($_POST['warna']=="1"){
-                    $harga=$jum_hal*$_POST['copy']*1700;
+                else if ($kertas=="4"){
+                  if ($warna=="1"){
+                    $harga=$jum_hal*$copy*1700;
                   }
                   else {
-                    $harga=$jum_hal*$_POST['copy']*820;
+                    $harga=$jum_hal*$copy*820;
                   }
                   
                 }
                 $date = date("Y-m-d");
-                $query = "UPDATE `order` SET order_kertas = '$_POST[kertas]', order_warna='$_POST[warna]', order_hal='$_POST[hal]', order_sampai='$_POST[sampai]', order_copy='$_POST[copy]', ambil_tanggal='$_POST[tanggal]', order_ket='$_POST[keterangan]', order_tanggal='$date', order_harga='$harga' WHERE id = '$_SESSION[id]'";
+                $query = "UPDATE `order` SET order_kertas = '$kertas', order_warna='$warna', order_hal='$hal', order_sampai='$sampai', order_copy='$copy', ambil_tanggal='$ambil_tanggal', order_ket='$keterangan', order_tanggal='$date', order_harga='$harga' WHERE id = '$_SESSION[id]'";
                 $sql = mysqli_query($db,$query) or die("Query fail : ".mysqli_error());
                 $row = mysqli_fetch_array($sql);
                 $_SESSION['order2']=1;

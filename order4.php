@@ -1,4 +1,5 @@
 <?php 
+      include "library/function_noinject.php";
       session_start(); 
       if(!isset($_SESSION['order'])){ 
             header("Location: order.php"); 
