@@ -1,3 +1,10 @@
+<?php 
+      session_start(); 
+      if(!isset($_SESSION['loggedin'])){ 
+            header("Location: login.php"); 
+            die; 
+      } 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +116,7 @@
                  <td>".$row['order_copy']."</td>
                  <td>".$row['ambil_tanggal']."</td>
                  <td>".$row['order_ket']."</td>
-                 <td>".$file[1]."</td>";
+                 <td><a href='file/".$file[1]."' download style='color:white;'>".$file[1]."</a></td>";
                  if($row['order_status']==1){
                   echo "<td>DONE</td>
                </tr>";

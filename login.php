@@ -61,7 +61,8 @@ div {
    <input name='login' type='submit' value="Submit">
  </form>
  </div>
- <a href="index.html" style="margin-left: 62%;font-size: 3em;">HOME</a>
+<!--  <a href="index.html" style="margin-left: 62%;font-size: 3em;">HOME</a> -->
+ <a href="index.html" style="margin-left: 62%;">BACK</a>
 <?php
  }else{
    header("Location:index.html");

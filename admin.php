@@ -2,7 +2,7 @@
 include_once('header.php');
  if(isset($_SESSION['loggedin'])){
     echo "Selamat datang ".$_SESSION['loggedin']."! <a href='logout.php'>Keluar</a>"; //Pesan apabila user sudah login
- }else{
+ } else{
     header("Location:login.php"); //Redirect header ke login.php apabila user belum login
  }
 ?>
