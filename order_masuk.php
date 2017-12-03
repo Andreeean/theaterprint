@@ -83,6 +83,7 @@
                  <th>Keterangan Tambahan</th>
                  <th>File</th>
                  <th>Update Status</th>
+                 <th>Hapus</th>
                </tr>
              </thead>
                <tbody>
@@ -123,9 +124,7 @@
                  else{
                   echo "<td><a href='ubahstatus.php?id=".$row['id']."' style='color:white;'>ON PROCESS</a></td>";
                  }
-                 
-                 echo"
-               </tr>";
+                 echo "<td><a href='order_masuk_hapus.php?id=".$row['id']."' style='color:white;'>HAPUS</a></td>></tr>";
                   }
                ?>
              </tbody>

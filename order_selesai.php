@@ -83,6 +83,7 @@
                  <th>Keterangan Tambahan</th>
                  <th>File</th>
                  <th>Status</th>
+                 <th>Hapus</th>
                </tr>
              </thead>
              <tbody>
@@ -118,16 +119,15 @@
                  <td>".$row['order_ket']."</td>
                  <td><a href='file/".$file[1]."' download style='color:white;'>".$file[1]."</a></td>";
                  if($row['order_status']==1){
-                  echo "<td>DONE</td>
-               </tr>";
+                  echo "<td>DONE</td>";
                  }
                  else{
-                  echo "<td>ON PROCESS</td>
-               </tr>";
+                  echo "<td>ON PROCESS</td>";
                  }
-              echo "</tr>";
+
+                 echo "<td><a href='order_selesai_hapus.php?id=".$row['id']."' style='color:white;'>HAPUS</a></td></tr>";
                
-                  }
+                }
                ?>
              </tbody>
            </table>

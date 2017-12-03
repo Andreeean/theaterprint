@@ -74,7 +74,8 @@
                 $row = mysqli_fetch_array($sql);
                 $_SESSION['order']=1;
                 $_SESSION['id']=$row['id'];
-                header("Location: order2.php"); 
+                //header("Location: order2.php"); 
+                echo '<script type="text/javascript">window.location.href="order.php";</script>';
               }
             }
     ?>
