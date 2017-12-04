@@ -22,6 +22,16 @@ include_once('header.php');
    }
  
 ?>
+<head>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style type="text/css">
   input[type=text],input[type=password], select {
     width: 100%;
@@ -54,17 +64,27 @@ div {
     padding: 20px;
 }
 </style>
-<div style="height: 200px; width: 600px;margin-top: 15%;margin-left: 25%;">
- <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
-   <label for="fname">Username</label>
-   <input name='username' placeholder='Username' required type='text'/>
-   <label for="fname">Password</label>
-   <input name='password' placeholder='Password' required type='password'/>
-   <input name='login' type='submit' value="Submit">
- </form>
- </div>
-<!--  <a href="index.html" style="margin-left: 62%;font-size: 3em;">HOME</a> -->
- <a href="index.html" style="margin-left: 62%;">BACK</a>
+</head>
+<div class="container" style="margin-top: 10%">
+  <div class="row">
+    <div class="col-sm-4">
+      
+    </div>
+    <div class="col-sm-4">
+         <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>' method='POST'>
+           <label for="fname">Username</label>
+           <input name='username' placeholder='Username' required type='text'/>
+           <label for="fname">Password</label>
+           <input name='password' placeholder='Password' required type='password'/>
+           <input name='login' type='submit' value="Submit">
+         </form>
+         <a href="index.html" style="margin-left: 90%;">BACK</a>
+    </div>
+    <div class="col-sm-4">
+      
+    </div>
+  </div>
+</div> 
 <?php
  }else{
    header("Location:index.html");
